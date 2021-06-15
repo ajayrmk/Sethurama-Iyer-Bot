@@ -1,35 +1,17 @@
 import bs4
 import requests
-import os
 import telebot
-from flask import Flask, request
-from config import token
+from token import TOKEN
 from datetime import date
 from html import escape
 
 # Telebot
-bot = telebot.TeleBot(token)
-
-
-# Server deploy
-server = Flask(__name__)
-@server.route('/' + token, methods=['POST'])
-def getMessage():
-	bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
-	return "!", 200
-
-@server.route("/")
-def webhook():
-	bot.remove_webhook()
-	bot.set_webhook(url='https://sethurama-iyer-bot.herokuapp.com' + token)
-	return "!", 200
-
-
+bot = telebot.TeleBot(TOKEN)
 
 # Bot functions	
 def getImg(photo_info, message):
 	
-	img_url = "https://api.telegram.org/file/bot%s/%s" % (token, photo_info.file_path)
+	img_url = "https://api.telegram.org/file/bot%s/%s" % (TOKEN, photo_info.file_path)
 	mess = bot.reply_to(message, "🔎 *Plase wait, CBI is onto this.*", parse_mode="Markdown")
 	
 	# Get search page
@@ -108,4 +90,4 @@ def photo(message):
 
 
 if __name__ == "__main__":
-	server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
+		bot.infinity_polling()

@@ -13,7 +13,6 @@ chardet = "*"
 idna = "*"
 six = "*"
 datetime = "*"
-flask = "*"
 
 [dev-packages]
 
