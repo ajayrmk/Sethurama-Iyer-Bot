@@ -12,19 +12,21 @@ bot = telebot.TeleBot(token)
 
 
 # Server deploy
-
-bot = telebot.TeleBot(token=token)
 server = Flask(__name__)
+@server.route('/' + TOKEN, methods=['POST'])
+def getMessage():
+	bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
+	return "!", 200
 
-@server.route('/' + token, methods=['POST'])
+@server.route("/")
 def webhook():
-   bot.remove_webhook()
-   bot.set_webhook(url='https://sethurama-iyer-bot.herokuapp.com' + token)
-   return "!", 200@server.route("/")
-   if __name__ == "__main__":
-	   server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
+	bot.remove_webhook()
+	bot.set_webhook(url='<HEROKU Web URL>' + TOKEN)
+	return "!", 200
 
 
+
+# Bot functions	
 def getImg(photo_info, message):
 	
 	img_url = "https://api.telegram.org/file/bot%s/%s" % (token, photo_info.file_path)
@@ -103,3 +105,7 @@ def photo(message):
 def photo(message):
 	photo_info = bot.get_file(message.document.file_id)
 	getImg(photo_info, message)
+
+
+if __name__ == "__main__":
+	server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
