@@ -1,4 +1,6 @@
+from flask import Flask, request
 import bs4
+import os
 import requests
 import telebot
 from config import token
@@ -7,6 +9,18 @@ from html import escape
 
 # Telebot
 bot = telebot.TeleBot(token)
+
+
+# Server deploy
+@server.route('/' + token, methods=['POST'])
+def getMessage():
+   bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
+   return "!", 200@server.route("/")
+def webhook():
+   bot.remove_webhook()
+   bot.set_webhook(url='https://sethurama-iyer-bot.herokuapp.com' + token)
+   return "!", 200if __name__ == "__main__":
+   server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
 
 
 def getImg(photo_info, message):
