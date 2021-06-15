@@ -35,7 +35,7 @@ def getImg(photo_info, message):
 		find_sug = b.select('.fKDtNb')
 		suggestion = find_sug[0].text
 	except Exception as e:
-		print(e, "No suggestion")
+		print(e, "Nothing to show, CBI is helpless.")
 		suggestion = False
 
 	# Try parse similar
@@ -57,9 +57,9 @@ def getImg(photo_info, message):
 	# Send
 	txt = ''
 	if suggestion:
-		txt = '<b>Main suggestion: %s</b>\n\n' % escape(suggestion)
+		txt = '<b>This came up during investigation: %s</b>\n\n' % escape(suggestion)
 
-	txt += '<b>Search results:</b>\n\n'
+	txt += '<b>Case File:</b>\n\n'
 	if sites:
 		txt += '\n\n'.join([f'<a href="{escape(site[0])}">{escape(site[1])}</a>' for site in sites])
 
