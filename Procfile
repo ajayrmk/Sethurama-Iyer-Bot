@@ -1,1 +1,1 @@
-web: python3 bot.py
+web: pipenv run bot.py
