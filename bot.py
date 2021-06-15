@@ -1,7 +1,8 @@
 import bs4
-import os
 import requests
+import os
 import telebot
+from flask import Flask, request
 from config import token
 from datetime import date
 from html import escape
@@ -11,6 +12,10 @@ bot = telebot.TeleBot(token)
 
 
 # Server deploy
+
+bot = telebot.TeleBot(token=token)
+server = Flask(__name__)
+
 @server.route('/' + token, methods=['POST'])
 def getMessage():
    bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
@@ -18,8 +23,9 @@ def getMessage():
 def webhook():
    bot.remove_webhook()
    bot.set_webhook(url='https://sethurama-iyer-bot.herokuapp.com' + token)
-   return "!", 200if __name__ == "__main__":
-   server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
+   return "!", 200@server.route("/")
+   if __name__ == "__main__":
+	   server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
 
 
 def getImg(photo_info, message):
@@ -100,7 +106,3 @@ def photo(message):
 def photo(message):
 	photo_info = bot.get_file(message.document.file_id)
 	getImg(photo_info, message)
-
-
-if __name__ == '__main__':
-	bot.infinity_polling()
