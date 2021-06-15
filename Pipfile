@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-python-telegram-bot = "*"
+pytelegrambotapi = "*"
 bs4 = "*"
 urllib3 = "*"
 certifi = "*"
@@ -13,7 +13,6 @@ chardet = "*"
 idna = "*"
 six = "*"
 datetime = "*"
-pytelegrambotapi = "*"
 
 [dev-packages]
 
