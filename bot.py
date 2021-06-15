@@ -1,18 +1,18 @@
 import bs4
 import requests
 import telebot
-from token import TOKEN
+from config import token
 from datetime import date
 from html import escape
 
 # Telebot
-bot = telebot.TeleBot(TOKEN)
+bot = telebot.TeleBot(token)
 
-# Bot functions	
+
 def getImg(photo_info, message):
 	
-	img_url = "https://api.telegram.org/file/bot%s/%s" % (TOKEN, photo_info.file_path)
-	mess = bot.reply_to(message, "🔎 *Plase wait, CBI is onto this.*", parse_mode="Markdown")
+	img_url = "https://api.telegram.org/file/bot%s/%s" % (token, photo_info.file_path)
+	mess = bot.reply_to(message, "🔎 *Processing...*", parse_mode="Markdown")
 	
 	# Get search page
 	headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/602.2.14 (KHTML, like Gecko) Version/10.0.1 Safari/602.2.14', 
@@ -57,15 +57,15 @@ def getImg(photo_info, message):
 	# Send
 	txt = ''
 	if suggestion:
-		txt = '<b>This came up in the investigation: %s</b>\n\n' % escape(suggestion)
+		txt = '<b>Main suggestion: %s</b>\n\n' % escape(suggestion)
 
-	txt += '<b>Case File:</b>\n\n'
+	txt += '<b>Search results:</b>\n\n'
 	if sites:
 		txt += '\n\n'.join([f'<a href="{escape(site[0])}">{escape(site[1])}</a>' for site in sites])
 
 	markup = telebot.types.InlineKeyboardMarkup()
 	if similar:
-		markup.add(telebot.types.InlineKeyboardButton(text="🔗 Similar cases", url=similar))
+		markup.add(telebot.types.InlineKeyboardButton(text="🔗 Link to similar images", url=similar))
 
 	markup.add(telebot.types.InlineKeyboardButton(text="🌐 Search page", url=response.url))
 	bot.edit_message_text(message_id=mess.message_id, text=txt, parse_mode='HTML', reply_markup=markup, chat_id=message.chat.id, disable_web_page_preview=True)
@@ -89,5 +89,5 @@ def photo(message):
 	getImg(photo_info, message)
 
 
-if __name__ == "__main__":
-		bot.infinity_polling()
+if __name__ == '__main__':
+	bot.infinity_polling()
