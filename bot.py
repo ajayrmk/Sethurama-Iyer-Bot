@@ -4,23 +4,15 @@ import telebot
 from config import token
 from datetime import date
 from html import escape
-import os
 
 # Telebot
 bot = telebot.TeleBot(token)
-
-PORT = int(os.environ.get('PORT', 5000))
-updater.start_webhook(listen="0.0.0.0",
-                          port=int(PORT),
-                          url_path=token)
-updater.bot.setWebhook('https://sethuramaiyerbot.herokuapp.com/' + token)
-
 
 
 def getImg(photo_info, message):
 	
 	img_url = "https://api.telegram.org/file/bot%s/%s" % (token, photo_info.file_path)
-	mess = bot.reply_to(message, "🔎 *Processing...*", parse_mode="Markdown")
+	mess = bot.reply_to(message, "🔎 *Plase wait, CBI is onto this.*", parse_mode="Markdown")
 	
 	# Get search page
 	headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/602.2.14 (KHTML, like Gecko) Version/10.0.1 Safari/602.2.14', 
@@ -65,7 +57,7 @@ def getImg(photo_info, message):
 	# Send
 	txt = ''
 	if suggestion:
-		txt = '<b>This came-up while investigating: %s</b>\n\n' % escape(suggestion)
+		txt = '<b>This came up in the investigation: %s</b>\n\n' % escape(suggestion)
 
 	txt += '<b>Case File:</b>\n\n'
 	if sites:
@@ -73,7 +65,7 @@ def getImg(photo_info, message):
 
 	markup = telebot.types.InlineKeyboardMarkup()
 	if similar:
-		markup.add(telebot.types.InlineKeyboardButton(text="🔗 Other related cases", url=similar))
+		markup.add(telebot.types.InlineKeyboardButton(text="🔗 Similar cases", url=similar))
 
 	markup.add(telebot.types.InlineKeyboardButton(text="🌐 Search page", url=response.url))
 	bot.edit_message_text(message_id=mess.message_id, text=txt, parse_mode='HTML', reply_markup=markup, chat_id=message.chat.id, disable_web_page_preview=True)
