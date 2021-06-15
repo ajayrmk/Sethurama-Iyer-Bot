@@ -1,4 +1,3 @@
-from flask import Flask, request
 import bs4
 import os
 import requests
