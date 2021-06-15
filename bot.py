@@ -13,7 +13,7 @@ bot = telebot.TeleBot(token)
 
 # Server deploy
 server = Flask(__name__)
-@server.route('/' + TOKEN, methods=['POST'])
+@server.route('/' + token, methods=['POST'])
 def getMessage():
 	bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
 	return "!", 200
@@ -21,7 +21,7 @@ def getMessage():
 @server.route("/")
 def webhook():
 	bot.remove_webhook()
-	bot.set_webhook(url='<HEROKU Web URL>' + TOKEN)
+	bot.set_webhook(url='https://sethurama-iyer-bot.herokuapp.com' + token)
 	return "!", 200
 
 
