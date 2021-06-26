@@ -15,15 +15,14 @@ vectorizer = pickle.load(open('vectorizer_model.pkl','rb'))
 model = pickle.load(open('model.pkl','rb'))
 
 # Wikiscrap and predict function 
-def wikiDataCat(response):
+def wikiData(response):
     try:
         page = wikipedia.page(response)
-        data = [page.summary]
+        data = page.summary
     except:
         topics = wikipedia.search(response)
-        data = [wikipedia.summary(topics[1])]
-
-    return model.predict(vectorizer.transform(data))[0]
+        data = wikipedia.summary(topics[1])
+    return model.predict(vectorizer.transform([data]))[0]
 
 # Bot functions
 @bot.message_handler(content_types=['text'])
@@ -38,7 +37,7 @@ def first_handler(pm):
 
 def second_handler(pm, first):
 	second = pm.text
-	if wikiDataCat(first) == wikiDataCat(second):
+	if wikiData(first) == wikiData(second):
 		bot.send_message(pm.chat.id, f"{first} and {second} are related. Both are from the field of {wikiDataCat(first)}.")
 	else:
 		bot.send_message(pm.chat.id, f"They are not related.")
