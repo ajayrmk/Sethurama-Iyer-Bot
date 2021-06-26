@@ -2,8 +2,6 @@
 import telebot
 from telebot import types
 from config import token
-import pandas as pd
-import numpy as np
 import wikipedia
 import pickle
 
