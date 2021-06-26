@@ -38,7 +38,7 @@ def first_handler(pm):
 def second_handler(pm, first):
 	second = pm.text
 	if wikiData(first) == wikiData(second):
-		bot.send_message(pm.chat.id, f"{first} and {second} are related. Both are from the field of {wikiDataCat(first)}.")
+		bot.send_message(pm.chat.id, f"{first} and {second} are related. Both are from the field of {wikiData(first)}.")
 	else:
 		bot.send_message(pm.chat.id, f"They are not related.")
 		
