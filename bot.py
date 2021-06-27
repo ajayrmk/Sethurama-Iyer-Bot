@@ -38,8 +38,8 @@ def first_handler(pm):
 def second_handler(pm, first):
 	second = pm.text
 	if wikiData(first) == wikiData(second):
-		bot.send_message(pm.chat.id, f"{first} and {second} are related. Both are from the field of {wikiData(first)}.")
+		bot.send_message(pm.chat.id, f"We may have a hit here, {first} and {second} are related. Both are from the field of {wikiData(first)}.")
 	else:
-		bot.send_message(pm.chat.id, f"They are not related.")
+		bot.send_message(pm.chat.id, f"Primary investigation shows no direct association between the two accused.")
 		
 bot.polling()
